@@ -1,10 +1,12 @@
 const express = require('express');
 const { createTodo, updateTodo } = require('./types');
-const {createTodo} = require("./types")
+const {todo} = require("./types")
+const cors = require('cors')
 const app = express();
 const port = 3001;
 
-app.listen(port, )
+app.use(express.json());
+app.use(cors());
 
 app.post("/todo", async function(req, res){
     const createPayload = req.body;
@@ -28,11 +30,16 @@ app.post("/todo", async function(req, res){
 })
 
 app.get("/todos", async function(req, res){
+    try{
     const todos = await todo.find({});
 
     res.json({
         todos
-    })
+    });
+}catch (error) {
+    console.error("Error fetching todos:", error);
+        res.status(500).json({ error: "Error fetching todos" });
+}
 })
 
 app.put("/completed", async function(req, res){
@@ -55,3 +62,7 @@ app.put("/completed", async function(req, res){
         msg: "todo completed"
     })
 })
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
