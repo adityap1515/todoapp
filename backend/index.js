@@ -1,5 +1,6 @@
 
 const express = require('express');
+const { createTodo, updateTodo } = require('./types');
 const app = express();
 
 app.use(express.json());
@@ -11,7 +12,15 @@ app.listen(3001, function () {
 
 app.post("/todo", function(req, res) {
    
-    res.status(200).send("POST /todo request received.");
+    const createPayload = req.body;
+    const parsedPayload = createTodo.safeParse(createPayload);
+    if(!parsedPayload.success) {
+        res.status(411).json({
+            msg: "you sent wrong inputs"
+        })
+        return;
+    }
+    //mut in mongo
 });
 
 app.get("/todos", function(req, res) {
@@ -20,5 +29,12 @@ app.get("/todos", function(req, res) {
 });
 
 app.put("/completed", function(req, res) {
-    res.status(200).send("PUT /completed request received.");
+    const updatePayload = req.body;
+    const parsedPayload = updateTodo.safeParse(updatePayload);
+    if(!parsedPayload.success){
+        res.status(411).json({
+            msg: "you sent the worng inputs",
+        })
+        return;
+    }
 });
