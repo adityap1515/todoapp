@@ -7,9 +7,7 @@ const app = express();
 
 app.use(express.json());
 
-app.listen(3001, function () {
-    console.log("back is running, ")
-})
+
 
 
 app.post("/todo",async function(req, res) {
@@ -53,3 +51,9 @@ app.put("/completed", async function(req, res) {
     }
 )
 });
+
+
+
+app.listen(3001, function () {
+    console.log("back is running, ")
+})
